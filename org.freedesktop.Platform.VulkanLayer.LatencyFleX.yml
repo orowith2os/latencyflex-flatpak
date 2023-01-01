@@ -3,8 +3,8 @@ branch: '22.08'
 sdk: org.freedesktop.Sdk
 runtime: org.freedesktop.Platform
 runtime-version: '22.08'
-build-extension: true
-# We might want to build for i386 later on, but for now lets focus on x86_64.
+build-extension: true 
+# Upstream LatencyFleX doesn't provide 32-bit binaries, so we won't build for 32-bit systems.
 cleanup:
   - /include
   - /share/pkgconfig
@@ -12,18 +12,25 @@ cleanup:
   - /lib/*/cmake
   - /lib/*/*.a
   - /lib/*/*.la
+build-options:
+  prefix: /usr/lib/extensions/vulkan/LatencyFleX
+  strip: true
 modules:
 
-  - name: LatencyFleX
+  - name: LatencyFleX-64bit
     buildsystem: simple
-    build-commands:
+    build-commands: 
       - cd layer;
         meson build;
         ninja -C build;
         meson install -C build --skip-subprojects
     sources: &latencyflex-sources
+      # LatencyFleX upstream uses submodules for some things, so let's use the git source rather than archive.
       - type: git
         url: https://github.com/ishitatsuyuki/LatencyFleX.git
         tag: v0.1.1
         commit: 0470806678d81d5b328c35f27b240c8af4f4f42b
+        x-checker-data:
+          type: git
+          tag-pattern: ^v([\d.]+)$
         
