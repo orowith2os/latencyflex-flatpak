@@ -1,0 +1,29 @@
+id: org.freedesktop.Platform.VulkanLayer.LatencyFleX
+branch: '22.08'
+sdk: org.freedesktop.Sdk
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+build-extension: true
+# We might want to build for i386 later on, but for now lets focus on x86_64.
+cleanup:
+  - /include
+  - /share/pkgconfig
+  - /lib/*/pkgconfig
+  - /lib/*/cmake
+  - /lib/*/*.a
+  - /lib/*/*.la
+modules:
+
+  - name: LatencyFleX
+    buildsystem: simple
+    build-commands:
+      - cd layer;
+        meson build;
+        ninja -C build;
+        meson install -C build --skip-subprojects
+    sources: &latencyflex-sources
+      - type: git
+        url: https://github.com/ishitatsuyuki/LatencyFleX.git
+        tag: v0.1.1
+        commit: 0470806678d81d5b328c35f27b240c8af4f4f42b
+        
