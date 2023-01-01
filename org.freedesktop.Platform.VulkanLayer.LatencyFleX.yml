@@ -17,14 +17,30 @@ build-options:
   strip: true
 modules:
 
-  - name: LatencyFleX-64bit
+
+  - name: vulkan-headers
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://github.com/KhronosGroup/Vulkan-Headers/archive/refs/tags/v1.3.238.tar.gz
+        sha256: c2b72c5e94bcabb5c276c0d55344f66d3486c9465beb74397aeb7d5bcf537143
+
+  - name: vulkan-validation-layers
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/refs/tags/sdk-1.3.236.0.tar.gz
+        sha256: 68f2cf70b1960f85e931ef56935e6ceda1beeb214f8fa319e6b95128b02b485a
+
+
+  - name: LatencyFleX
     buildsystem: simple
     build-commands: 
       - cd layer;
         meson build;
         ninja -C build;
         meson install -C build --skip-subprojects
-    sources: &latencyflex-sources
+    sources:
       # LatencyFleX upstream uses submodules for some things, so let's use the git source rather than archive.
       - type: git
         url: https://github.com/ishitatsuyuki/LatencyFleX.git
