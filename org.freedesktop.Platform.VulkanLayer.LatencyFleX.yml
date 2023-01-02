@@ -41,12 +41,8 @@ modules:
 
 
   - name: LatencyFleX
-    buildsystem: simple
-    build-commands: 
-      - cd layer;
-        meson build;
-        ninja -C build;
-        meson install -C build --skip-subprojects
+    buildsystem: meson
+    subdir: layer
     sources:
       # LatencyFleX upstream uses submodules for some things, so let's use the git source rather than archive.
       - type: git
